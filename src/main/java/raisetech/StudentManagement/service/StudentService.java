@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.service;
 
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentsCourses;
+import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -24,16 +26,16 @@ public class StudentService {
   }
 
   public List<Student> searchStudentList() {//search30{ //getStudentList()
-    //return repository.searchStudent();
+    return repository.search();
     //検索処理 repository.search();return students.stream()
     //List<Student> filteredStudents = students.stream()
     //    .filter(student -> students.get >= 30 && student.getAge() < 40)
     //    .collect(Collectors.toList());
     //return filteredStudents;
 
-    return repository.search().stream()
-        .filter(student -> student.getAge() >= 0 && student.getAge() < 100)
-        .collect(Collectors.toList());
+    //return repository.search().stream()
+    //    .filter(student -> student.getAge() >= 0 && student.getAge() < 100)
+    //    .collect(Collectors.toList());
   }  //ここで何からの処理を行う
 
   public List<StudentsCourses> searchStudentCourseList() {
@@ -41,6 +43,12 @@ public class StudentService {
     return repository.findAll(); //.stream()
         //.filter(course -> "Javaコース".equals(course.getCourseName()))
         //.collect(Collectors.toList());
+  }
+
+  @Transactional
+  public void registerStudent (StudentDetail studentDetail){
+    repository.registerStudent(studentDetail.getStudent());
+    // TODO:コース情報登録を行う
   }
 }
 
