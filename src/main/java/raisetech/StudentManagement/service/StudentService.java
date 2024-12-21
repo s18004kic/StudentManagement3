@@ -1,6 +1,7 @@
 package raisetech.StudentManagement.service;
 
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,6 +50,12 @@ public class StudentService {
   public void registerStudent (StudentDetail studentDetail){
     repository.registerStudent(studentDetail.getStudent());
     // TODO:コース情報登録を行う
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()){
+      studentsCourse.setStudentId(studentDetail.getStudent().getId());
+      studentsCourse.setCourseStartAt(LocalDateTime.now());
+      studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
+      repository.registerStudentsCourses(studentsCourse);
+    }
   }
 }
 
