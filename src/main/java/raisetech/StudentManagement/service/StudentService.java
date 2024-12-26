@@ -39,6 +39,15 @@ public class StudentService {
     //    .collect(Collectors.toList());
   }  //ここで何からの処理を行う
 
+  public StudentDetail searchStudent(String id){
+    Student student = repository.searchstudent(id);
+    List<StudentsCourses>studentsCourses = repository.searchStudentsCourses(student.getId());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentsCourses(studentsCourses);
+    return studentDetail;
+  }
+
   public List<StudentsCourses> searchStudentCourseList() {
     // Javaコースをフィルタリングして返す
     return repository.findAll(); //.stream()
@@ -55,6 +64,15 @@ public class StudentService {
       studentsCourse.setCourseStartAt(LocalDateTime.now());
       studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
       repository.registerStudentsCourses(studentsCourse);
+    }
+  }
+
+  @Transactional
+  public void updateStudent(StudentDetail studentDetail){
+    repository.updateStudent(studentDetail.getStudent());
+    // TODO:コース情報登録を行う
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()){
+      repository.updateStudentsCourses(studentsCourse);
     }
   }
 }
