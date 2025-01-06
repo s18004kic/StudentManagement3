@@ -47,12 +47,7 @@
     <label for="telephone">電話番号:</label>
     <input type="text" id="telephone" th:field="*{student.telephone}"  />
   </div>
-  <div>
-    <label for="isDeleted">キャンセル:</label>
-    <input type="checkbox" id="isDeleted" th:field="*{student.isDeleted}" />
-  </div>
-
-  <div th:each="course, stat : *{studentsCourses}">
+    <div th:each="course, stat : *{studentsCourses}">
     <label for="id"
            th:for="studentCourse.__${stat.index}__.id">受講コースID:</label>
     <input type="text" id="id" th:id="studentCourse.__${stat.index}__.id"
@@ -64,7 +59,6 @@
   </div>
   <div>
     <button type="submit">更新</button>
-    <a href="/studentList">キャンセル</a>
   </div>
 </form>
 </body>
