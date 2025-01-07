@@ -39,6 +39,15 @@ public class StudentService {
     //    .collect(Collectors.toList());
   }  //ここで何からの処理を行う
 
+  public StudentDetail searchStudent(String id){
+    Student student = repository.searchstudent(id);
+    List<StudentsCourses>studentsCourses = repository.searchStudentsCourses(student.getId());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentsCourses(studentsCourses);
+    return studentDetail;
+  }
+
   public List<StudentsCourses> searchStudentCourseList() {
     // Javaコースをフィルタリングして返す
     return repository.findAll(); //.stream()
@@ -57,36 +66,13 @@ public class StudentService {
       repository.registerStudentsCourses(studentsCourse);
     }
   }
+
+  @Transactional
+  public void updateStudent(StudentDetail studentDetail){
+    repository.updateStudent(studentDetail.getStudent());
+    // TODO:コース情報登録を行う
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()){
+      repository.updateStudentsCourses(studentsCourse);
+    }
+  }
 }
-
-
-//@Service
-//public class StudentService {
-//  private final StudentRepository repository;
-//
-//  public StudentService(StudentRepository repository) {
-//    this.repository = repository;
-//  }
-//
-//  public List<Student> getActiveStudents() {
-//    return repository.findActiveStudents();
-//  }
-//
-//  public void updateRemark(Long id, String remark) {
-//    Student student = repository.findById(id).orElseThrow();
-//    student.setRemark(remark);
-//    repository.save(student);
-//  }
-//}
-
-
-
-  //public List<StudentsCourses>searchStudentCourseList(){ //getStudentsCourseList() {earchStudentCourseJava(){
-  //  //return repository.searchStudentCourseJava();
-  //      return students.stream()
-  //      .filter(student -> "Javaコース".equals(student.getCourse()))
-  //      .collect(Collectors.toList());
-  //  return repository.findAll();
-  //}
-//}
-
