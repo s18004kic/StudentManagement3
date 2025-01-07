@@ -17,7 +17,7 @@ public class Student {
   private String sex;
   private String remark; // 備考
   private boolean isDeleted; // 削除
-  private String telephone;
+  private String telephone; //電話番号
 }
   //public String getId() {
   //  return id;
