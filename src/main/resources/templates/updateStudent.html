@@ -47,10 +47,14 @@
     <label for="telephone">電話番号:</label>
     <input type="text" id="telephone" th:field="*{student.telephone}"  />
   </div>
+  <div>
+    <label for="isDeleted">キャンセル:</label>
+    <input type="checkbox" id="isDeleted" th:field="*{student.deleted}" />
+  </div>
     <div th:each="course, stat : *{studentsCourses}">
-    <label for="id"
+    <label for="studentCourseId"
            th:for="studentCourse.__${stat.index}__.id">受講コースID:</label>
-    <input type="text" id="id" th:id="studentCourse.__${stat.index}__.id"
+    <input type="text" id="studentCourseId" th:id="studentCourse.__${stat.index}__.id"
            th:field="*{studentsCourses[__${stat.index}__].id}" />
     <label for="courseName"
            th:for="studentCourse.__${stat.index}__.courseName">受講コース名:</label>

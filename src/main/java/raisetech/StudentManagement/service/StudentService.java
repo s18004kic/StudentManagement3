@@ -76,35 +76,3 @@ public class StudentService {
     }
   }
 }
-
-
-//@Service
-//public class StudentService {
-//  private final StudentRepository repository;
-//
-//  public StudentService(StudentRepository repository) {
-//    this.repository = repository;
-//  }
-//
-//  public List<Student> getActiveStudents() {
-//    return repository.findActiveStudents();
-//  }
-//
-//  public void updateRemark(Long id, String remark) {
-//    Student student = repository.findById(id).orElseThrow();
-//    student.setRemark(remark);
-//    repository.save(student);
-//  }
-//}
-
-
-
-  //public List<StudentsCourses>searchStudentCourseList(){ //getStudentsCourseList() {earchStudentCourseJava(){
-  //  //return repository.searchStudentCourseJava();
-  //      return students.stream()
-  //      .filter(student -> "Javaコース".equals(student.getCourse()))
-  //      .collect(Collectors.toList());
-  //  return repository.findAll();
-  //}
-//}
-
