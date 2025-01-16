@@ -30,12 +30,11 @@ public class StudentController {
   /** 受講生サービス */
   private StudentService service;
   /** 受講生コンバーター　*/
-  private StudentConverter converter;
+  //private StudentConverter converter;
 
   @Autowired
-  public StudentController(StudentService service, StudentConverter converter) {
+  public StudentController(StudentService service) {
     this.service = service;
-    this.converter = converter;
   }
 
   /**
@@ -43,13 +42,10 @@ public class StudentController {
    * 全件検索を行うので、条件指定は行いません。
    * @return　受講生一覧（全件）
    */
-  @GetMapping("/studentList")
-  public String getStudentList(Model model){  //List<StudentDetail>
-    List<Student> students = service.searchStudentList();
-    List<StudentsCourses> studentsCourses = service.searchStudentCourseList();
 
-    model.addAttribute("studentList", converter.convertStudentDetails(students, studentsCourses));
-    return "studentList";
+  @GetMapping("/studentList")
+  public List<StudentDetail> getStudentList(){
+    return service.searchStudentList();
   }
 
   /**
@@ -65,7 +61,7 @@ public class StudentController {
 
   @GetMapping("/studentsCourseList")
   public List<StudentsCourses> getStudentsCourseList(){
-    return service.searchStudentCourseList();//repository.findAll();//findAllとは別にStudentsCoursesを入れるのもＯＫ
+    return service.searchStudentsCoursesList();
   }
 
   //@GetMapping("/newStudent")

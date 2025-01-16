@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentsCourses;
 import raisetech.StudentManagement.domain.StudentDetail;
@@ -22,12 +23,12 @@ import java.util.List;
 public class StudentService {
 
   private StudentRepository repository;
-  //private List<Student> students;
-  //private List<Student> students = new ArrayList<>();
+  private StudentConverter converter;
 
   @Autowired
-  public StudentService(StudentRepository repository) {
+  public StudentService(StudentRepository repository, StudentConverter converter) {
     this.repository = repository;
+    this.converter = converter;
   }
 
   /**
@@ -35,31 +36,22 @@ public class StudentService {
    *全件検索を行うので、条件指定は行いません。
    * @return　受講生一覧（全件）
    */
-  public List<Student> searchStudentList() {//search30{ //getStudentList()
-    return repository.search();
-    //検索処理 repository.search();return students.stream()
-    //List<Student> filteredStudents = students.stream()
-    //    .filter(student -> students.get >= 30 && student.getAge() < 40)
-    //    .collect(Collectors.toList());
-    //return filteredStudents;
-
-    //return repository.search().stream()
-    //    .filter(student -> student.getAge() >= 0 && student.getAge() < 100)
-    //    .collect(Collectors.toList());
-  }  //ここで何からの処理を行う
-
+  public List<StudentDetail> searchStudentList() {
+    List<Student> studentList = repository.search();
+    List<StudentsCourses> studentsCoursesList = repository.searchStudentsCoursesList();
+    return converter.convertStudentDetails(studentList,studentsCoursesList);
+  }
+  /**
+   * 受講生検索です。
+   * IDに紐づく受講生情報を取得した後、その受講生に紐づく受講生コース情報を取得して設定します。
+   *
+   * @param id　受講生ID
+   * @return　受講生
+   */
   public StudentDetail searchStudent(String id){
     Student student = repository.searchStudent(id);
     List<StudentsCourses>studentsCourses = repository.searchStudentsCourses(student.getId());
-    StudentDetail studentDetail = new StudentDetail();
-    studentDetail.setStudent(student);
-    studentDetail.setStudentsCourses(studentsCourses);
-    return studentDetail;
-  }
-
-  public List<StudentsCourses> searchStudentCourseList() {
-    // Javaコースをフィルタリングして返す
-    return repository.findAll();
+    return new StudentDetail(student,studentsCourses);
   }
 
   @Transactional
@@ -81,5 +73,9 @@ public class StudentService {
     for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()){
       repository.updateStudentsCourses(studentsCourse);
     }
+  }
+
+  public List<StudentsCourses> searchStudentsCoursesList() {
+    return searchStudentsCoursesList();
   }
 }
