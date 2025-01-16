@@ -17,8 +17,14 @@ public interface StudentRepository {
   @Select("SELECT * FROM students")
   List<Student> search();
 
+  @Select("SELECT * FROM students WHERE id = #{id}")
+  Student searchStudent(String id);
+
   @Select("SELECT * FROM students_courses")
   List<StudentsCourses> findAll(); //findAllとは別にStudentsCoursesを入れるのもＯＫ
+
+  @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
+  List<StudentsCourses> searchStudentsCourses(String studentId);
 
   @Insert(
       "INSERT INTO students(name,kana_Name,nickname,email,area,age,sex,remark,is_deleted) "
@@ -29,15 +35,17 @@ public interface StudentRepository {
   @Insert(" INSERT INTO students_courses(student_id,course_name,course_start_at,course_end_at)"
       + "VALUES(#{studentId},#{courseName},#{courseStartAt},#{courseEndAt})")
   @Options(useGeneratedKeys = true,keyProperty = "id")
+  void registerStudentsCourse(StudentsCourses studentsCourses);
 
   @Update(
-      "Update students SET (name = #{name},kana_name = #{kanaName},nickname = #{nickname},"
-          + "email = #{email},area = #{area},age = #{age},sex = #{sex},remark = #{remark},is_deleted = #{isDeleted}) WHERE id = #{id}")
-  void UpdateStudent(Student student);
+      "Update students SET name = #{name},kana_name = #{kanaName},nickname = #{nickname},"
+          + "email = #{email},area = #{area},age = #{age},sex = #{sex},remark = #{remark},is_deleted = #{isDeleted} WHERE id = #{id}")
+  void updateStudent(Student student);
+
   @Update(
-      " Update students_courses(student_id,course_name,course_start_at,course_end_at)"
-      + "VALUES(#{studentId},#{courseName},#{courseStartAt},#{courseEndAt})")
-  void UpdateStudentsCourses(StudentsCourses studentsCourses);
+      " Update students_courses SET course_name = #{courseName} WHERE id = #{id}")//(student_id,course_name,course_start_at,course_end_at)"
+      //+ "VALUES(#{studentId},#{courseName},#{courseStartAt},#{courseEndAt})")
+  void updateStudentsCourses(StudentsCourses studentsCourses);
 }
 
 

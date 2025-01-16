@@ -14,6 +14,10 @@ import raisetech.StudentManagement.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * 受講生情報を取り扱うサービスです。
+ * 受講生の検索や登録・更新処理を行います。
+ */
 @Service
 public class StudentService {
 
@@ -26,6 +30,11 @@ public class StudentService {
     this.repository = repository;
   }
 
+  /**
+   *受講生一覧検索です。
+   *全件検索を行うので、条件指定は行いません。
+   * @return　受講生一覧（全件）
+   */
   public List<Student> searchStudentList() {//search30{ //getStudentList()
     return repository.search();
     //検索処理 repository.search();return students.stream()
@@ -39,54 +48,38 @@ public class StudentService {
     //    .collect(Collectors.toList());
   }  //ここで何からの処理を行う
 
+  public StudentDetail searchStudent(String id){
+    Student student = repository.searchStudent(id);
+    List<StudentsCourses>studentsCourses = repository.searchStudentsCourses(student.getId());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentsCourses(studentsCourses);
+    return studentDetail;
+  }
+
   public List<StudentsCourses> searchStudentCourseList() {
     // Javaコースをフィルタリングして返す
-    return repository.findAll(); //.stream()
-        //.filter(course -> "Javaコース".equals(course.getCourseName()))
-        //.collect(Collectors.toList());
+    return repository.findAll();
   }
 
   @Transactional
-  public void registerStudent (StudentDetail studentDetail){
+  public StudentDetail registerStudent (StudentDetail studentDetail){
     repository.registerStudent(studentDetail.getStudent());
-    // TODO:コース情報登録を行う
     for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()){
       studentsCourse.setStudentId(studentDetail.getStudent().getId());
       studentsCourse.setCourseStartAt(LocalDateTime.now());
       studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
-      repository.registerStudentsCourses(studentsCourse);
+      repository.registerStudentsCourse(studentsCourse);
+    }
+    return studentDetail;
+  }
+
+  @Transactional
+  public void updateStudent(StudentDetail studentDetail){
+    repository.updateStudent(studentDetail.getStudent());
+    // TODO:コース情報登録を行う
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()){
+      repository.updateStudentsCourses(studentsCourse);
     }
   }
 }
-
-
-//@Service
-//public class StudentService {
-//  private final StudentRepository repository;
-//
-//  public StudentService(StudentRepository repository) {
-//    this.repository = repository;
-//  }
-//
-//  public List<Student> getActiveStudents() {
-//    return repository.findActiveStudents();
-//  }
-//
-//  public void updateRemark(Long id, String remark) {
-//    Student student = repository.findById(id).orElseThrow();
-//    student.setRemark(remark);
-//    repository.save(student);
-//  }
-//}
-
-
-
-  //public List<StudentsCourses>searchStudentCourseList(){ //getStudentsCourseList() {earchStudentCourseJava(){
-  //  //return repository.searchStudentCourseJava();
-  //      return students.stream()
-  //      .filter(student -> "Javaコース".equals(student.getCourse()))
-  //      .collect(Collectors.toList());
-  //  return repository.findAll();
-  //}
-//}
-
