@@ -61,8 +61,6 @@ public class StudentService {
   public StudentDetail registerStudent(StudentDetail studentDetail) {
     Student student = studentDetail.getStudent();
 
-    // 登録を行う。
-    //if (studentDetail.getStudentCourseList() != null) {
     repository.registerStudent(student);
     studentDetail.getStudentCourseList().forEach(studentCourse -> {
       initStudentsCourse(studentCourse, student);
@@ -77,7 +75,7 @@ public class StudentService {
    * @param studentCourse 　受講生コース情報
    * @param student       　受講生
    */
-  private void initStudentsCourse(StudentCourse studentCourse, Student student) {
+    void initStudentsCourse(StudentCourse studentCourse, Student student) {
     LocalDateTime now = LocalDateTime.now();
 
     studentCourse.setStudentId(student.getId());
@@ -91,7 +89,6 @@ public class StudentService {
   @Transactional
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
-    //if (studentDetail.getStudentCourseList() != null) {
     // TODO:コース情報登録を行う
     studentDetail.getStudentCourseList()
         .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
