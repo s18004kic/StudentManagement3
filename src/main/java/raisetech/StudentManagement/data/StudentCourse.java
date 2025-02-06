@@ -11,15 +11,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudentCourse {
-  @NotBlank
+
   @Pattern(regexp = "^\\d+$")
   private String id;
 
-  @NotBlank
   @Pattern(regexp = "^\\d+$")
   private String studentId;
+
   @NotBlank
   private String courseName;
+
   private LocalDateTime courseStartAt;
   private LocalDateTime courseEndAt;
 }

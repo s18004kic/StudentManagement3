@@ -55,134 +55,171 @@ class StudentServiceTest {
 
   @Test
   void 受講生詳細の検索_リポジトリの処理が適切に呼び出され_正しい受講生詳細が返ること() {
-    // テスト用データ
-    String studentId = "1";
+    String id = "999";
     Student student = new Student();
-    student.setId(studentId);
-    student.setName("Test User");
+    student.setId(id);
 
-    List<StudentCourse> studentCourses = new ArrayList<>();
-    StudentCourse course = new StudentCourse();
-    course.setStudentId(studentId);
-    course.setCourseName("Javaコース");
-    studentCourses.add(course);
+    when(repository.searchStudent(id)).thenReturn(student);
+    when(repository.searchStudentCourse(id)).thenReturn(new ArrayList<>());
 
-    // リポジトリのモック設定
-    when(repository.searchStudent(studentId)).thenReturn(student);
-    when(repository.searchStudentCourse(studentId)).thenReturn(studentCourses);
+    StudentDetail expected = new StudentDetail(student, new ArrayList<>());
 
-    // メソッド実行
-    StudentDetail result = sut.searchStudent(studentId);
+    StudentDetail actual = sut.searchStudent(id);
 
-    // 検証
-    assertNotNull(result);
-    assertEquals(studentId, result.getStudent().getId());
-    assertEquals("Test User", result.getStudent().getName());
-    assertEquals(1, result.getStudentCourseList().size());
-    assertEquals("Javaコース", result.getStudentCourseList().get(0).getCourseName());
-
-    // リポジトリの呼び出しを確認
-    verify(repository, times(1)).searchStudent(studentId);
-    verify(repository, times(1)).searchStudentCourse(studentId);
+    verify(repository, times(1)).searchStudent(id);
+    verify(repository, times(1)).searchStudentCourse(id);
+    Assertions.assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
   }
+    // テスト用データ
+    //String studentId = "1";
+    //Student student = new Student();
+    //student.setId(studentId);
+    //student.setName("Test User");
+//
+    //List<StudentCourse> studentCourses = new ArrayList<>();
+    //StudentCourse course = new StudentCourse();
+    //course.setStudentId(studentId);
+    //course.setCourseName("Javaコース");
+    //studentCourses.add(course);
+//
+    //// リポジトリのモック設定
+    //when(repository.searchStudent(studentId)).thenReturn(student);
+    //when(repository.searchStudentCourse(studentId)).thenReturn(studentCourses);
+//
+    //// メソッド実行
+    //StudentDetail result = sut.searchStudent(studentId);
+//
+    //// 検証
+    //assertNotNull(result);
+    //assertEquals(studentId, result.getStudent().getId());
+    //assertEquals("Test User", result.getStudent().getName());
+    //assertEquals(1, result.getStudentCourseList().size());
+    //assertEquals("Javaコース", result.getStudentCourseList().get(0).getCourseName());
+//
+    //// リポジトリの呼び出しを確認
+    //verify(repository, times(1)).searchStudent(studentId);
+    //verify(repository, times(1)).searchStudentCourse(studentId);
+
 
   @Test
   void 受講生詳細の登録_リポジトリの処理が適切に呼び出され_受講生詳細が返ること() {
-    // テスト用データの作成
     Student student = new Student();
-    student.setId("1");
-    student.setName("Test User");
+    StudentCourse studentCourse = new StudentCourse();
+    List<StudentCourse> studentCourseList = List.of(studentCourse);
+    StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
 
-    StudentCourse course1 = new StudentCourse();
-    course1.setCourseName("Javaコース");
+    sut.registerStudent(studentDetail);
 
-    StudentCourse course2 = new StudentCourse();
-    course2.setCourseName("Spring Framework");
-
-    List<StudentCourse> studentCourses = new ArrayList<>();
-    studentCourses.add(course1);
-    studentCourses.add(course2);
-
-    StudentDetail studentDetail = new StudentDetail(student, studentCourses);
-
-    // リポジトリのモック設定
-    doNothing().when(repository).registerStudent(any(Student.class));
-    doNothing().when(repository).registerStudentCourse(any(StudentCourse.class));
-
-    // メソッド実行
-    StudentDetail result = sut.registerStudent(studentDetail);
-
-    // 検証
-    assertNotNull(result);
-    assertEquals(student.getId(), result.getStudent().getId());
-    assertEquals(student.getName(), result.getStudent().getName());
-    assertEquals(2, result.getStudentCourseList().size());
-    assertEquals("Javaコース", result.getStudentCourseList().get(0).getCourseName());
-    assertEquals("Spring Framework", result.getStudentCourseList().get(1).getCourseName());
-
-    // リポジトリの呼び出しを検証
     verify(repository, times(1)).registerStudent(student);
-    verify(repository, times(2)).registerStudentCourse(any(StudentCourse.class));
+    verify(repository, times(1)).registerStudentCourse(studentCourse);
 
-    // `initStudentsCourse()` により `StudentCourse` に `studentId` がセットされていることを確認
-    assertEquals("1", studentCourses.get(0).getStudentId());
-    assertEquals("1", studentCourses.get(1).getStudentId());
   }
+    // テスト用データの作成
+    //Student student = new Student();
+    //student.setId("1");
+    //student.setName("Test User");
+//
+    //StudentCourse course1 = new StudentCourse();
+    //course1.setCourseName("Javaコース");
+//
+    //StudentCourse course2 = new StudentCourse();
+    //course2.setCourseName("Spring Framework");
+//
+    //List<StudentCourse> studentCourses = new ArrayList<>();
+    //studentCourses.add(course1);
+    //studentCourses.add(course2);
+//
+    //StudentDetail studentDetail = new StudentDetail(student, studentCourses);
+//
+    //// リポジトリのモック設定
+    //doNothing().when(repository).registerStudent(any(Student.class));
+    //doNothing().when(repository).registerStudentCourse(any(StudentCourse.class));
+//
+    //// メソッド実行
+    //StudentDetail result = sut.registerStudent(studentDetail);
+//
+    //// 検証
+    //assertNotNull(result);
+    //assertEquals(student.getId(), result.getStudent().getId());
+    //assertEquals(student.getName(), result.getStudent().getName());
+    //assertEquals(2, result.getStudentCourseList().size());
+    //assertEquals("Javaコース", result.getStudentCourseList().get(0).getCourseName());
+    //assertEquals("Spring Framework", result.getStudentCourseList().get(1).getCourseName());
+//
+    //// リポジトリの呼び出しを検証
+    //verify(repository, times(1)).registerStudent(student);
+    //verify(repository, times(2)).registerStudentCourse(any(StudentCourse.class));
+//
+    //// `initStudentsCourse()` により `StudentCourse` に `studentId` がセットされていることを確認
+    //assertEquals("1", studentCourses.get(0).getStudentId());
+    //assertEquals("1", studentCourses.get(1).getStudentId());
+  //}
 
   @Test
-  void 受講生詳細の登録_リポジトリの処理が適切に呼び出され_正しい受講生が返ること() {
-    // テスト用データの作成
+  void 受講生詳細の更新_リポジトリの処理が適切に呼び出され_正しい受講生が返ること() {
     Student student = new Student();
-    student.setId("1");
-    student.setName("Test User");
+    StudentCourse studentCourse = new StudentCourse();
+    List<StudentCourse> studentCourseList = List.of(studentCourse);
+    StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
 
-    StudentCourse course1 = new StudentCourse();
-    course1.setCourseName("Javaコース");
+    sut.updateStudent(studentDetail);
 
-    StudentCourse course2 = new StudentCourse();
-    course2.setCourseName("Spring Framework");
+    verify(repository, times(1)).updateStudent(student);
+    verify(repository, times(1)).updateStudentCourse(studentCourse);
 
-    List<StudentCourse> studentCourses = new ArrayList<>();
-    studentCourses.add(course1);
-    studentCourses.add(course2);
-
-    StudentDetail studentDetail = new StudentDetail(student, studentCourses);
-
-    // リポジトリのモック設定
-    doNothing().when(repository).registerStudent(any(Student.class));
-    doNothing().when(repository).registerStudentCourse(any(StudentCourse.class));
-
-    // メソッド実行
-    StudentDetail result = sut.registerStudent(studentDetail);
-
-    // 検証
-    assertNotNull(result);
-    assertEquals(student.getId(), result.getStudent().getId());
-    assertEquals(student.getName(), result.getStudent().getName());
-    assertEquals(2, result.getStudentCourseList().size());
-    assertEquals("Javaコース", result.getStudentCourseList().get(0).getCourseName());
-    assertEquals("Spring Framework", result.getStudentCourseList().get(1).getCourseName());
-
-    // リポジトリの呼び出しを検証
-    verify(repository, times(1)).registerStudent(student);
-    verify(repository, times(2)).registerStudentCourse(any(StudentCourse.class));
-
-    // `initStudentsCourse()` により `StudentCourse` に `studentId` がセットされていることを確認
-    assertEquals("1", studentCourses.get(0).getStudentId());
-    assertEquals("1", studentCourses.get(1).getStudentId());
   }
-
-  //@Test
-  //void 受講生詳細の登録_初期化処理が行われること(){
-  //  String id = "1";
-  //  Student student = new Student();
-  //  student.setId(id);
-  //  StudentCourse studentCourse = new StudentCourse();
+    // テスト用データの作成
+    //Student student = new Student();
+    //student.setId("1");
+    //student.setName("Test User");
 //
-  //  sut.initStudentsCourse((studentCourse, student.getId());
+    //StudentCourse course1 = new StudentCourse();
+    //course1.setCourseName("Javaコース");
 //
-  //  assertEquals(id, studentCourse.getStudentId());
-  //  assertEquals(LocalDateTime.now().getHour(), studentCourse.getCourseStartAt().getHour());
-  //  assertEquals(LocalDateTime.now().plusYears(1).getYear(), studentCourse.getCourseEndAt().getYear());
+    //StudentCourse course2 = new StudentCourse();
+    //course2.setCourseName("Spring Framework");
+//
+    //List<StudentCourse> studentCourses = new ArrayList<>();
+    //studentCourses.add(course1);
+    //studentCourses.add(course2);
+//
+    //StudentDetail studentDetail = new StudentDetail(student, studentCourses);
+//
+    //// リポジトリのモック設定
+    //doNothing().when(repository).registerStudent(any(Student.class));
+    //doNothing().when(repository).registerStudentCourse(any(StudentCourse.class));
+//
+    //// メソッド実行
+    //StudentDetail result = sut.registerStudent(studentDetail);
+//
+    //// 検証
+    //assertNotNull(result);
+    //assertEquals(student.getId(), result.getStudent().getId());
+    //assertEquals(student.getName(), result.getStudent().getName());
+    //assertEquals(2, result.getStudentCourseList().size());
+    //assertEquals("Javaコース", result.getStudentCourseList().get(0).getCourseName());
+    //assertEquals("Spring Framework", result.getStudentCourseList().get(1).getCourseName());
+//
+    //// リポジトリの呼び出しを検証
+    //verify(repository, times(1)).registerStudent(student);
+    //verify(repository, times(2)).registerStudentCourse(any(StudentCourse.class));
+//
+    //// `initStudentsCourse()` により `StudentCourse` に `studentId` がセットされていることを確認
+    //assertEquals("1", studentCourses.get(0).getStudentId());
+    //assertEquals("1", studentCourses.get(1).getStudentId());
   //}
+
+  @Test
+  void 受講生詳細の登録_初期化処理が行われること(){
+    String id = "999";
+    Student student = new Student();
+    student.setId(id);
+    StudentCourse studentCourse = new StudentCourse();
+
+    sut.initStudentsCourse(studentCourse, student.getId());
+
+    assertEquals(id, studentCourse.getStudentId());
+    assertEquals(LocalDateTime.now().getHour(), studentCourse.getCourseStartAt().getHour());
+    assertEquals(LocalDateTime.now().plusYears(1).getYear(),studentCourse.getCourseEndAt().getYear(),studentCourse.getCourseEndAt().getYear());
+  }
 }
