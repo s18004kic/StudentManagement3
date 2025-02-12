@@ -43,7 +43,6 @@ class StudentControllerTest {
   private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
-  //@DisplayName("受講生詳細の一覧検索テスト")
   void 受講生詳細の一覧検索が実行できて空のリストが返ってくること() throws Exception{
     mockMvc.perform(get("/studentList"))
         .andExpect(status().isOk())
