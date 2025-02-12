@@ -50,6 +50,7 @@
   </update>
 
   <update id="updateStudentCourse">
-    Update students_courses SET course_name = #{courseName} WHERE id = #{id}
+    UPDATE students_courses SET course_name = #{courseName} WHERE student_id = #{studentId}
   </update>
+
 </mapper>
