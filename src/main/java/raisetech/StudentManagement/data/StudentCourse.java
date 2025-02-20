@@ -23,4 +23,5 @@ public class StudentCourse {
 
   private LocalDateTime courseStartAt;
   private LocalDateTime courseEndAt;
+  private String status; // 申込状況を追加
 }
