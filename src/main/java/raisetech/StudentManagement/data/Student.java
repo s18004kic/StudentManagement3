@@ -6,10 +6,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Schema(description = "受講生")
 @Getter
 @Setter
+@AllArgsConstructor // すべてのフィールドを含むコンストラクタを自動生成
+@NoArgsConstructor  // 引数なしのコンストラクタも必要な場合
 public class Student {
 
   @Pattern(regexp = "^\\d+$", message = "数字のみ入力するようにしてください。")
@@ -36,7 +40,8 @@ public class Student {
   @NotBlank
   private String sex;
 
-  private String remark; // 備考
-  private boolean isDeleted; // 削除
-  private String telephone; //電話番号
+  private String remark;  // 備考
+  private boolean isDeleted; // 削除フラグ
+  private String telephone;  // 電話番号
+  private String status;  // 受講ステータス
 }

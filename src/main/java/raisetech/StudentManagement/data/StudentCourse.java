@@ -23,5 +23,8 @@ public class StudentCourse {
 
   private LocalDateTime courseStartAt;
   private LocalDateTime courseEndAt;
-  private String status; // 申込状況を追加
+  private String status; // 仮申込・本申込・受講中・受講終了
+
+  //public String getStatus() { return status; }
+  //public void setStatus(String status) { this.status = status; }
 }

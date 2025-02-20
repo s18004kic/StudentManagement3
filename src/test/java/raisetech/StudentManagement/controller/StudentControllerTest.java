@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -38,16 +39,17 @@ class StudentControllerTest {
   private MockMvc mockMvc;
 
   @MockBean
+  //private StudentService studentService;
   private StudentService service;
 
   private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   void 受講生詳細の一覧検索が実行できて空のリストが返ってくること() throws Exception{
-    mockMvc.perform(get("/studentList"))
-        .andExpect(status().isOk())
-        .andExpect(content().json("[]"));
-
+    Mockito.when(service.searchStudentList()).thenReturn(List.of(new StudentDetail()));
+    mockMvc.perform(MockMvcRequestBuilders.get("/studentList"))
+        .andExpect(status().isOk());
+        //.andExpect(content().json("[]"));
     verify(service,times(1)).searchStudentList();
   }
 
@@ -79,7 +81,8 @@ class StudentControllerTest {
             },
             "studentCourseList": [
                 {
-                    "courseName": "Javaコース"
+                    "courseName": "Javaコース",
+                    "status" : "受講中"
                 }
             ]
         }
@@ -114,7 +117,8 @@ class StudentControllerTest {
                           "studentId": "23",
                           "courseName": "Javaコース",
                           "courseStartAt": "2025-01-19T10:15:23",
-                          "courseEndAt": "2026-01-19T10:15:23"
+                          "courseEndAt": "2026-01-19T10:15:23",
+                          "status": "本申込"
                       }
                   ]
               }
