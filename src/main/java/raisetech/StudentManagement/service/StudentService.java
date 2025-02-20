@@ -18,11 +18,11 @@ import raisetech.StudentManagement.repository.StudentRepository;
  */
 @Service
 public class StudentService {
-
+  @Autowired
+  //private StudentRepository studentRepository; //追加部分
   private StudentRepository repository;
   private StudentConverter converter;
 
-  @Autowired
   public StudentService(StudentRepository repository, StudentConverter converter) {
     this.repository = repository;
     this.converter = converter;
@@ -96,5 +96,13 @@ public class StudentService {
 
   public List<StudentCourse> searchStudentCourseList() {
     return searchStudentCourseList();
+  }
+
+  //以下追加したもの
+  public void updateStudentCourse(StudentCourse studentCourse) {
+    repository.updateStudentCourse(studentCourse);
+  }
+  public List<StudentCourse> getStudentCourseById(String id) {
+    return repository.searchStudentCourseById(id);
   }
 }

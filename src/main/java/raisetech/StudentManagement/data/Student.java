@@ -39,4 +39,5 @@ public class Student {
   private String remark; // 備考
   private boolean isDeleted; // 削除
   private String telephone; //電話番号
+  private String status;
 }
