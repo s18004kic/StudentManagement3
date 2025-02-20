@@ -50,7 +50,41 @@
   </update>
 
   <update id="updateStudentCourse">
-    UPDATE students_courses SET course_name = #{courseName} WHERE student_id = #{studentId}
+    UPDATE students_courses
+    SET
+    course_name = #{courseName},
+    course_start_at = #{courseStartAt},
+    course_end_at = #{courseEndAt},
+    status = #{status}
+    WHERE student_id = #{studentId} <!--student_id = #{studentId} -->
   </update>
 
+    <select id="searchStudentCourseById" resultType="raisetech.StudentManagement.data.StudentCourse">
+      SELECT * FROM students_courses WHERE student_id = #{studentId}
+    </select>
+
+  <!--
+    <select id="searchStudentByConditions" parameterType="map" resultType="Student">
+      SELECT * FROM students
+      WHERE
+      (#{name} IS NULL OR name LIKE CONCAT('%', #{name}, '%'))
+      AND (#{area} IS NULL OR area = #{area})
+      AND (#{sex} IS NULL OR sex = #{sex})
+    </select>
+  -->
+    <!--
+    <select id="searchStudentByConditions" parameterType="map" resultType="Student">
+      SELECT * FROM students
+      WHERE 1=1
+      <if test="name != null and name != ''">
+        name LIKE CONCAT('%', #{name}, '%')
+      </if>
+      <if test="area != null and area != ''">
+        AND area = #{area}
+      </if>
+      <if test="sex != null and sex != ''">
+        AND sex = #{sex}
+      </if>
+    </select>
+  -->
 </mapper>
