@@ -45,7 +45,8 @@
     age = #{age},
     sex = #{sex},
     remark = #{remark},
-    is_deleted = #{isDeleted}
+    is_deleted = #{isDeleted},
+    telephone = #{telephone}
     WHERE id = #{id}
   </update>
 
@@ -56,7 +57,7 @@
     course_start_at = #{courseStartAt},
     course_end_at = #{courseEndAt},
     status = #{status}
-    WHERE student_id = #{studentId} <!--student_id = #{studentId} -->
+    WHERE student_id = #{studentId}
   </update>
 
     <select id="searchStudentCourseById" resultType="raisetech.StudentManagement.data.StudentCourse">
