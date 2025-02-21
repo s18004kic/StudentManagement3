@@ -45,7 +45,8 @@
     age = #{age},
     sex = #{sex},
     remark = #{remark},
-    is_deleted = #{isDeleted}
+    is_deleted = #{isDeleted},
+    telephone = #{telephone}
     WHERE id = #{id}
   </update>
 
@@ -56,13 +57,22 @@
     course_start_at = #{courseStartAt},
     course_end_at = #{courseEndAt},
     status = #{status}
-    WHERE student_id = #{studentId} <!--student_id = #{studentId} -->
+    WHERE student_id = #{studentId}
   </update>
 
+  <select id="searchStudentCourseById" resultType="raisetech.StudentManagement.data.StudentCourse">
+    SELECT * FROM students_courses
+    WHERE student_id = #{studentId}
+    ORDER BY course_start_at DESC  <!-- 最新のデータを優先 -->
+    LIMIT 1  <!-- 1件だけ取得 -->
+  </select>
+
+
+  <!--
     <select id="searchStudentCourseById" resultType="raisetech.StudentManagement.data.StudentCourse">
       SELECT * FROM students_courses WHERE student_id = #{studentId}
     </select>
-
+-->
   <!--
     <select id="searchStudentByConditions" parameterType="map" resultType="Student">
       SELECT * FROM students

@@ -21,7 +21,7 @@ class StudentConverterTest {
   void 学生とコースが正しくマッピングされること() {
     List<Student> studentList = createStudentList("1", "高橋次郎");
     List<StudentCourse> studentCourseList = createStudentCourseList(
-        "1", "Javaコース", LocalDateTime.of(2023, 1, 1, 9, 0), LocalDateTime.of(2023, 12, 31, 18, 0));
+        "1", "Javaコース", LocalDateTime.of(2023, 1, 1, 9, 0), LocalDateTime.of(2023, 12, 31, 18, 0),"仮申込");
 
     List<StudentDetail> result = converter.convertStudentDetails(studentList, studentCourseList);
 
@@ -49,18 +49,31 @@ class StudentConverterTest {
     return studentList;
   }
 
+  //以下追加したもの
   private List<StudentCourse> createStudentCourseList(String studentId, String courseName,
-      LocalDateTime courseStartAt, LocalDateTime courseEndAt) {
+      LocalDateTime courseStartAt, LocalDateTime courseEndAt, String status) {
     List<StudentCourse> studentCourseList = new ArrayList<>();
-    StudentCourse course = new StudentCourse();
-    course.setId("101");
-    course.setStudentId(studentId);
-    course.setCourseName(courseName);
-    course.setCourseStartAt(courseStartAt);
-    course.setCourseEndAt(courseEndAt);
+
+    // コンストラクタを使ってオブジェクトを作成
+    StudentCourse course = new StudentCourse("101", studentId, courseName, courseStartAt, courseEndAt, status);
+
     studentCourseList.add(course);
     return studentCourseList;
   }
+
+  //private List<StudentCourse> createStudentCourseList(String studentId, String courseName,
+  //    LocalDateTime courseStartAt, LocalDateTime courseEndAt, String status) {
+  //  List<StudentCourse> studentCourseList = new ArrayList<>();
+  //  StudentCourse course = new StudentCourse();
+  //  course.setId("101");
+  //  course.setStudentId(studentId);
+  //  course.setCourseName(courseName);
+  //  course.setCourseStartAt(courseStartAt);
+  //  course.setCourseEndAt(courseEndAt);
+  //  course.setStatus(status);
+  //  studentCourseList.add(course);
+  //  return studentCourseList;
+  //}
 
   // 検証用のヘルパーメソッド
   private void assertStudentDetail(List<StudentDetail> result, String expectedName,

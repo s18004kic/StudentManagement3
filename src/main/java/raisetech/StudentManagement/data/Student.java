@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
@@ -12,8 +14,10 @@ import lombok.NoArgsConstructor;
 @Schema(description = "受講生")
 @Getter
 @Setter
+@Data
 @AllArgsConstructor // すべてのフィールドを含むコンストラクタを自動生成
 @NoArgsConstructor  // 引数なしのコンストラクタも必要な場合
+@EqualsAndHashCode // equals と hashCode を自動生成
 public class Student {
 
   @Pattern(regexp = "^\\d+$", message = "数字のみ入力するようにしてください。")
@@ -43,5 +47,18 @@ public class Student {
   private String remark;  // 備考
   private boolean isDeleted; // 削除フラグ
   private String telephone;  // 電話番号
-  private String status;  // 受講ステータス
 }
+  //public Student(String id, String name, String kanaName, String nickname, String email, String area, int age, String sex, String remark, boolean isDeleted, String telephone, String status) {
+  //  this.id = id;
+  //  this.name = name;
+  //  this.kanaName = kanaName;
+  //  this.nickname = nickname;
+  //  this.email = email;
+  //  this.area = area;
+  //  this.age = age;
+  //  this.sex = sex;
+  //  this.remark = remark;
+  //  this.isDeleted = isDeleted;
+  //  this.telephone = telephone;
+  //  this.status = status;
+  //}
