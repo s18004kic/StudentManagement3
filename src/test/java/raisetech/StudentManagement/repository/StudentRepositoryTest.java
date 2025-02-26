@@ -1,7 +1,6 @@
 package raisetech.StudentManagement.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.STRING_BUFFER;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.StringIdGenerator;
