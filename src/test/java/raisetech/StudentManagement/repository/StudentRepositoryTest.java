@@ -40,7 +40,6 @@ class StudentRepositoryTest {
     System.out.println("Actual: " + actual);
     // Assert: 検索結果が期待値と完全に一致することを検証
     assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
-    //assertThat(actual).containsExactlyElementsOf(expected);
   }
 
   @Test
