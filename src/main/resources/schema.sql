@@ -18,5 +18,6 @@ student_id varchar(36) NOT NULL,
 course_name VARCHAR(50) NOT NULL,
 course_start_at TIMESTAMP,
 course_end_at TIMESTAMP,
+status enum('仮申込','本申込','受講中','受講終了') NOT NULL DEFAULT '仮申込',
 FOREIGN KEY (student_id) REFERENCES students(id)
 );

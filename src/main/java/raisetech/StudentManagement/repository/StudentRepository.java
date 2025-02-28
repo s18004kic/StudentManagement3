@@ -1,11 +1,14 @@
 package raisetech.StudentManagement.repository;
 
+import io.swagger.v3.oas.models.media.XML;
 import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.data.repository.query.Param;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 
@@ -86,5 +89,14 @@ public interface StudentRepository {
    * @param studentCourse 　受講生コース情報
    */
   //@Update("Update students_courses SET course_name = #{courseName} WHERE id = #{id}")
-  void updateStudentCourse(StudentCourse studentCourse);
-}
+  void updateStudentCourse(StudentCourse studentCourse); // 更新件数を返す
+  List<StudentCourse> searchStudentCourseById(String id);
+
+  //List<Student> searchStudentByConditions(Map<String, Object> conditions);
+
+  //List<Student> searchStudentByConditions(String name, String area, String sex);
+  //List<Student> searchStudentByConditions(
+   //   @Param("name") String name,
+   //   @Param("area") String area,
+   //   @Param("sex") String sex);
+  }

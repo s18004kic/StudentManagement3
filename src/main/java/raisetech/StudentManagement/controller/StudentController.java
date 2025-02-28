@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.exception.TestException;
@@ -31,8 +34,12 @@ import raisetech.StudentManagement.service.StudentService;
  */
 @Validated
 @RestController
+//@RequestMapping("/students")
 public class StudentController {
 
+  //以下ついかしたもの
+  @Autowired
+  private StudentService studentService;
   /**
    * 受講生サービス
    */
@@ -112,4 +119,22 @@ public class StudentController {
   public ResponseEntity<String> handleNotFoundException(NotFoundException ex){
     return ResponseEntity.badRequest().body(ex.getMessage());
   }
+
+  //以下追加したもの
+  //@RequestMapping("/courses")
+  @PutMapping("/courses/update")
+  public ResponseEntity<String> updateStudentCourse(@RequestBody StudentCourse studentCourse) {
+    studentService.updateStudentCourse(studentCourse);
+    return ResponseEntity.ok("更新成功");
+  }
+
+ //@GetMapping("/search")
+ //public ResponseEntity<List<Student>> searchStudents(
+ //    @RequestParam(required = false) String name,
+ //    @RequestParam(required = false) String area,
+ //    @RequestParam(required = false) String sex
+ //) {
+ //  List<Student> students = service.searchStudentByConditions(name, area, sex);
+ //  return ResponseEntity.ok(students);
+ //}
 }
