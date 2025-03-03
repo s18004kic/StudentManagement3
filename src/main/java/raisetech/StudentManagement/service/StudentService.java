@@ -3,12 +3,15 @@ package raisetech.StudentManagement.service;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.data.StudentCourse.StudentSearchCondition;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 
@@ -18,8 +21,9 @@ import raisetech.StudentManagement.repository.StudentRepository;
  */
 @Service
 public class StudentService {
+
   @Autowired
-  //private StudentRepository studentRepository; //追加部分
+  private StudentRepository studentRepository; //追加部分
   private StudentRepository repository;
   private StudentConverter converter;
 
@@ -73,9 +77,9 @@ public class StudentService {
    * 受講生コース情報を登録する際の初期情報を設定する。
    *
    * @param studentCourse 　受講生コース情報
-   * @param id      　受講生
+   * @param id            　受講生
    */
-    void initStudentsCourse(StudentCourse studentCourse, String id) {
+  void initStudentsCourse(StudentCourse studentCourse, String id) {
     LocalDateTime now = LocalDateTime.now();
 
     studentCourse.setStudentId(id);
@@ -102,10 +106,21 @@ public class StudentService {
   public void updateStudentCourse(StudentCourse studentCourse) {
     repository.updateStudentCourse(studentCourse);
   }
+
   public List<StudentCourse> getStudentCourseById(String id) {
     return repository.searchStudentCourseById(id);
   }
-  //public List<Student> search() {
-  //  return search();
-  //}
+
+  //以下追加
+  public List<Student> searchStudents(StudentSearchCondition condition) {
+    Map<String, Object> paramMap = new HashMap<>();
+    if (condition.getId() != null) paramMap.put("id", condition.getId());
+    if (condition.getName() != null) paramMap.put("name", condition.getName());
+    if (condition.getEmail() != null) paramMap.put("email", condition.getEmail());
+    if (condition.getArea() != null) paramMap.put("area", condition.getArea());
+    if (condition.getAge() != null) paramMap.put("age", condition.getAge());
+    if (condition.getSex() != null) paramMap.put("sex", condition.getSex());
+
+    return studentRepository.searchStudentByConditions(paramMap);
+  }
 }

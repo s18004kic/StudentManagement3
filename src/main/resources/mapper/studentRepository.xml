@@ -67,6 +67,20 @@
     LIMIT 1  <!-- 1件だけ取得 -->
   </select>
 
+  <!-- 受講生の検索（条件指定） -->
+  <select id="searchStudentByConditions" resultType="raisetech.StudentManagement.data.Student">
+    SELECT * FROM students
+    <where>
+      <if test="id != null and id != ''"> AND id = #{id} </if>
+      <if test="name != null and name != ''"> AND name LIKE CONCAT('%', #{name}, '%') </if>
+      <if test="email != null and email != ''"> AND email = #{email} </if>
+      <if test="area != null and area != ''"> AND area = #{area} </if>
+      <if test="age != null"> AND age = #{age} </if>
+      <if test="sex != null and sex != ''"> AND sex = #{sex} </if>
+    </where>
+
+</select>
+
 
   <!--
     <select id="searchStudentCourseById" resultType="raisetech.StudentManagement.data.StudentCourse">

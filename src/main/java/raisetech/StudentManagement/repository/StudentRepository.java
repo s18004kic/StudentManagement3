@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.data.repository.query.Param;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.data.StudentCourse.StudentSearchCondition;
 
 /**
  * 受講生テーブルと受講コース情報テーブルと紐づくrepositoryです。
@@ -90,9 +91,18 @@ public interface StudentRepository {
    */
   //@Update("Update students_courses SET course_name = #{courseName} WHERE id = #{id}")
   void updateStudentCourse(StudentCourse studentCourse); // 更新件数を返す
+
+  /**
+   * 指定した受講生コース情報のIdを検索。
+   * @param id
+   * @return id
+   */
+
   List<StudentCourse> searchStudentCourseById(String id);
 
-  //List<Student> searchStudentByConditions(Map<String, Object> conditions);
+//以下追加したもの
+  List<Student> searchStudentByConditions(Map<String, Object> conditions);
+  //(StudentSearchCondition condition);
 
   //List<Student> searchStudentByConditions(String name, String area, String sex);
   //List<Student> searchStudentByConditions(

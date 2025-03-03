@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -55,4 +53,34 @@ public class StudentCourse {
       LocalDateTime courseStartAt, LocalDateTime courseEndAt, String status) {
     this(null, studentId, courseName, courseStartAt, courseEndAt, status);
   }
-}
+
+  public class StudentSearchCondition {
+    private String id;
+    private String name;
+    private String email;
+    private String area;
+    private Integer age;
+    private String sex;
+
+    public Object getId() {
+      return getId();
+    }
+    public Object getName() {
+      return getName();
+  }
+    public Object getEmail() {
+      return getEmail();
+    }
+
+    public Object getArea() {
+      return getArea();
+    }
+    public Object getAge() {
+      return getAge();
+    }
+
+    public Object getSex() {
+      return getSex();
+    }
+    }
+  }
