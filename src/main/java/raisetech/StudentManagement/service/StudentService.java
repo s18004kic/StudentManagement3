@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
-import raisetech.StudentManagement.data.StudentCourse.StudentSearchCondition;
+import raisetech.StudentManagement.data.StudentSearchCondition;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 
@@ -23,7 +23,6 @@ import raisetech.StudentManagement.repository.StudentRepository;
 public class StudentService {
 
   @Autowired
-  private StudentRepository studentRepository; //追加部分
   private StudentRepository repository;
   private StudentConverter converter;
 
@@ -114,13 +113,40 @@ public class StudentService {
   //以下追加
   public List<Student> searchStudents(StudentSearchCondition condition) {
     Map<String, Object> paramMap = new HashMap<>();
-    if (condition.getId() != null) paramMap.put("id", condition.getId());
-    if (condition.getName() != null) paramMap.put("name", condition.getName());
-    if (condition.getEmail() != null) paramMap.put("email", condition.getEmail());
-    if (condition.getArea() != null) paramMap.put("area", condition.getArea());
-    if (condition.getAge() != null) paramMap.put("age", condition.getAge());
-    if (condition.getSex() != null) paramMap.put("sex", condition.getSex());
 
-    return studentRepository.searchStudentByConditions(paramMap);
+    if (condition.getId() != null && !condition.getId().isEmpty()) {
+      paramMap.put("id", condition.getId());
+    }
+    if (condition.getName() != null && !condition.getName().isEmpty()) {
+      paramMap.put("name", condition.getName());
+    }
+    if (condition.getEmail() != null && !condition.getEmail().isEmpty()) {
+      paramMap.put("email", condition.getEmail());
+    }
+    if (condition.getArea() != null && !condition.getArea().isEmpty()) {
+      paramMap.put("area", condition.getArea());
+    }
+    if (condition.getAge() != null) {
+      paramMap.put("age", condition.getAge());
+    }
+    if (condition.getSex() != null && !condition.getSex().isEmpty()) {
+      paramMap.put("sex", condition.getSex());
+    }
+    if (condition.getCourseName() != null && !condition.getCourseName().isEmpty()) {
+      paramMap.put("courseName", condition.getCourseName());
+    }
+    return repository.searchStudentByConditions(paramMap);
   }
+
+//  public List<Student> searchStudents(StudentSearchCondition condition) {
+//    Map<String, Object> paramMap = new HashMap<>();
+//    if (condition.getId() != null) paramMap.put("id", condition.getId());
+//    if (condition.getName() != null) paramMap.put("name", condition.getName());
+//    if (condition.getEmail() != null) paramMap.put("email", condition.getEmail());
+//    if (condition.getArea() != null) paramMap.put("area", condition.getArea());
+//    if (condition.getAge() != null) paramMap.put("age", condition.getAge());
+//    if (condition.getSex() != null) paramMap.put("sex", condition.getSex());
+//
+//    return studentRepository.searchStudentByConditions(paramMap);
+//  }
 }

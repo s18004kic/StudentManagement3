@@ -1,6 +1,5 @@
 package raisetech.StudentManagement.repository;
 
-import io.swagger.v3.oas.models.media.XML;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Insert;
@@ -11,7 +10,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.data.repository.query.Param;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
-import raisetech.StudentManagement.data.StudentCourse.StudentSearchCondition;
+import raisetech.StudentManagement.data.StudentSearchCondition;
 
 /**
  * 受講生テーブルと受講コース情報テーブルと紐づくrepositoryです。
@@ -100,13 +99,6 @@ public interface StudentRepository {
 
   List<StudentCourse> searchStudentCourseById(String id);
 
-//以下追加したもの
+  //以下追加したもの
   List<Student> searchStudentByConditions(Map<String, Object> conditions);
-  //(StudentSearchCondition condition);
-
-  //List<Student> searchStudentByConditions(String name, String area, String sex);
-  //List<Student> searchStudentByConditions(
-   //   @Param("name") String name,
-   //   @Param("area") String area,
-   //   @Param("sex") String sex);
   }

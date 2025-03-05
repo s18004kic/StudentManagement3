@@ -61,20 +61,6 @@ class StudentConverterTest {
     return studentCourseList;
   }
 
-  //private List<StudentCourse> createStudentCourseList(String studentId, String courseName,
-  //    LocalDateTime courseStartAt, LocalDateTime courseEndAt, String status) {
-  //  List<StudentCourse> studentCourseList = new ArrayList<>();
-  //  StudentCourse course = new StudentCourse();
-  //  course.setId("101");
-  //  course.setStudentId(studentId);
-  //  course.setCourseName(courseName);
-  //  course.setCourseStartAt(courseStartAt);
-  //  course.setCourseEndAt(courseEndAt);
-  //  course.setStatus(status);
-  //  studentCourseList.add(course);
-  //  return studentCourseList;
-  //}
-
   // 検証用のヘルパーメソッド
   private void assertStudentDetail(List<StudentDetail> result, String expectedName,
       int expectedCourseSize, String expectedCourseName,

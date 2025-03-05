@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.util.List;
+import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -47,4 +49,5 @@ public class Student {
   private boolean isDeleted; // 削除フラグ
   private String telephone;  // 電話番号
 
+  private List<Map<String, Object>> studentCourseList;  // 🔹 追加（コース情報）
 }

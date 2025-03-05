@@ -67,7 +67,41 @@
     LIMIT 1  <!-- 1件だけ取得 -->
   </select>
 
-  <!-- 受講生の検索（条件指定） -->
+  <select id="searchStudentByConditions" resultMap="StudentMap">
+    SELECT s.*, sc.id AS course_id, sc.student_id, sc.course_name,
+    sc.course_start_at, sc.course_end_at, sc.status
+    FROM students s
+    LEFT JOIN students_courses sc ON s.id = sc.student_id
+    <where>
+      <if test="name != null and name != ''"> AND s.name LIKE CONCAT('%', #{name}, '%') </if>
+    </where>
+  </select>
+
+  <resultMap id="StudentMap" type="raisetech.StudentManagement.data.Student">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="kanaName" column="kana_name"/>
+    <result property="nickname" column="nickname"/>
+    <result property="email" column="email"/>
+    <result property="area" column="area"/>
+    <result property="age" column="age"/>
+    <result property="sex" column="sex"/>
+    <result property="remark" column="remark"/>
+    <result property="telephone" column="telephone"/>
+    <result property="deleted" column="is_deleted"/>
+
+    <!-- 🔹 studentCourseList にコース情報を追加 -->
+    <collection property="studentCourseList" ofType="java.util.HashMap">
+      <result property="id" column="course_id"/>
+      <result property="studentId" column="student_id"/>
+      <result property="courseName" column="course_name"/>
+      <result property="courseStartAt" column="course_start_at"/>
+      <result property="courseEndAt" column="course_end_at"/>
+      <result property="status" column="status"/>
+    </collection>
+  </resultMap>
+
+  <!-- 受講生の検索（条件指定）
   <select id="searchStudentByConditions" resultType="raisetech.StudentManagement.data.Student">
     SELECT * FROM students
     <where>
@@ -77,9 +111,10 @@
       <if test="area != null and area != ''"> AND area = #{area} </if>
       <if test="age != null"> AND age = #{age} </if>
       <if test="sex != null and sex != ''"> AND sex = #{sex} </if>
+      <if test="courseName != null and courseName != ''"> AND sc.course_name = #{courseName} </if>
     </where>
 
-</select>
+</select>-->
 
 
   <!--

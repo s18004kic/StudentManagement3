@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.hibernate.engine.jdbc.Size;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
-import raisetech.StudentManagement.data.StudentCourse.StudentSearchCondition;
+import raisetech.StudentManagement.data.StudentSearchCondition;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.exception.TestException;
 import raisetech.StudentManagement.service.StudentService;
@@ -131,8 +130,21 @@ public class StudentController {
   }
 
   //以下test終了後に追加
-  @GetMapping("/search")
-  public List<Student> searchStudents(@ModelAttribute StudentSearchCondition condition) {
+  @GetMapping("/students")
+  public List<Student> searchStudents(
+      @RequestParam(required = false) String name,
+      @RequestParam(required = false) String courseName) {
+
+    // 検索条件をセット
+    StudentSearchCondition condition = new StudentSearchCondition();
+    condition.setName(name);
+    condition.setCourseName(courseName);
+
     return studentService.searchStudents(condition);
   }
+
+//  @GetMapping("/students/{name}")
+//  public List<Student> searchStudents(@ModelAttribute StudentSearchCondition condition) {
+//    return studentService.searchStudents(condition);
+//  }
 }
