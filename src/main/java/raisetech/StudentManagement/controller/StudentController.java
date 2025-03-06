@@ -16,12 +16,17 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.data.StudentSearchCondition;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.exception.TestException;
 import raisetech.StudentManagement.service.StudentService;
@@ -31,8 +36,12 @@ import raisetech.StudentManagement.service.StudentService;
  */
 @Validated
 @RestController
+//@RequestMapping("/students")
 public class StudentController {
 
+  //以下ついかしたもの
+  @Autowired
+  private StudentService studentService;
   /**
    * 受講生サービス
    */
@@ -105,11 +114,39 @@ public class StudentController {
   }
 
   @GetMapping("/exception")
-  public ResponseEntity<String> throwException() throws NotFoundException{
+  public ResponseEntity<String> throwException() throws NotFoundException {
     throw new NotFoundException("現在のこのAPIは利用できません。古いURLとなっております。");
   }
+
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<String> handleNotFoundException(NotFoundException ex){
+  public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
     return ResponseEntity.badRequest().body(ex.getMessage());
   }
+
+  //以下追加したもの
+  @PutMapping("/courses/update")
+  public ResponseEntity<String> updateStudentCourse(@RequestBody StudentCourse studentCourse) {
+    studentService.updateStudentCourse(studentCourse);
+    return ResponseEntity.ok("更新成功");
+  }
+
+  //以下test終了後に追加
+  @GetMapping("/students")
+  public List<Student> searchStudents(@ModelAttribute StudentSearchCondition condition) {
+    return studentService.searchStudents(condition);
+  }
 }
+
+
+//  @GetMapping("/students")
+//  public List<Student> searchStudents(
+//      @RequestParam(required = false) String name,
+//      @RequestParam(required = false) String courseName) {
+//
+//    // 検索条件をセット
+//    StudentSearchCondition condition = new StudentSearchCondition();
+//    condition.setName(name);
+//    condition.setCourseName(courseName);
+//
+//    return studentService.searchStudents(condition);
+//  }

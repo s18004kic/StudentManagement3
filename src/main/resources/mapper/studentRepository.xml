@@ -45,12 +45,105 @@
     age = #{age},
     sex = #{sex},
     remark = #{remark},
-    is_deleted = #{isDeleted}
+    is_deleted = #{isDeleted},
+    telephone = #{telephone}
     WHERE id = #{id}
   </update>
 
   <update id="updateStudentCourse">
-    UPDATE students_courses SET course_name = #{courseName} WHERE student_id = #{studentId}
+    UPDATE students_courses
+    SET
+    course_name = #{courseName},
+    course_start_at = #{courseStartAt},
+    course_end_at = #{courseEndAt},
+    status = #{status}
+    WHERE student_id = #{studentId}
   </update>
 
+  <select id="searchStudentCourseById" resultType="raisetech.StudentManagement.data.StudentCourse">
+    SELECT * FROM students_courses
+    WHERE student_id = #{studentId}
+    ORDER BY course_start_at DESC  <!-- 最新のデータを優先 -->
+    LIMIT 1  <!-- 1件だけ取得 -->
+  </select>
+
+  <select id="searchStudentByConditions" resultMap="StudentMap">
+    SELECT s.*, sc.id AS course_id, sc.student_id, sc.course_name,
+    sc.course_start_at, sc.course_end_at, sc.status
+    FROM students s
+    LEFT JOIN students_courses sc ON s.id = sc.student_id
+    <where>
+      <if test="name != null and name != ''"> AND s.name LIKE CONCAT('%', #{name}, '%') </if>
+    </where>
+  </select>
+
+  <resultMap id="StudentMap" type="raisetech.StudentManagement.data.Student">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="kanaName" column="kana_name"/>
+    <result property="nickname" column="nickname"/>
+    <result property="email" column="email"/>
+    <result property="area" column="area"/>
+    <result property="age" column="age"/>
+    <result property="sex" column="sex"/>
+    <result property="remark" column="remark"/>
+    <result property="telephone" column="telephone"/>
+    <result property="deleted" column="is_deleted"/>
+
+    <!-- 🔹 studentCourseList にコース情報を追加 -->
+    <collection property="studentCourseList" ofType="java.util.HashMap">
+      <result property="id" column="course_id"/>
+      <result property="studentId" column="student_id"/>
+      <result property="courseName" column="course_name"/>
+      <result property="courseStartAt" column="course_start_at"/>
+      <result property="courseEndAt" column="course_end_at"/>
+      <result property="status" column="status"/>
+    </collection>
+  </resultMap>
+
+  <!-- 受講生の検索（条件指定）
+  <select id="searchStudentByConditions" resultType="raisetech.StudentManagement.data.Student">
+    SELECT * FROM students
+    <where>
+      <if test="id != null and id != ''"> AND id = #{id} </if>
+      <if test="name != null and name != ''"> AND name LIKE CONCAT('%', #{name}, '%') </if>
+      <if test="email != null and email != ''"> AND email = #{email} </if>
+      <if test="area != null and area != ''"> AND area = #{area} </if>
+      <if test="age != null"> AND age = #{age} </if>
+      <if test="sex != null and sex != ''"> AND sex = #{sex} </if>
+      <if test="courseName != null and courseName != ''"> AND sc.course_name = #{courseName} </if>
+    </where>
+
+</select>-->
+
+
+  <!--
+    <select id="searchStudentCourseById" resultType="raisetech.StudentManagement.data.StudentCourse">
+      SELECT * FROM students_courses WHERE student_id = #{studentId}
+    </select>
+-->
+  <!--
+    <select id="searchStudentByConditions" parameterType="map" resultType="Student">
+      SELECT * FROM students
+      WHERE
+      (#{name} IS NULL OR name LIKE CONCAT('%', #{name}, '%'))
+      AND (#{area} IS NULL OR area = #{area})
+      AND (#{sex} IS NULL OR sex = #{sex})
+    </select>
+  -->
+    <!--
+    <select id="searchStudentByConditions" parameterType="map" resultType="Student">
+      SELECT * FROM students
+      WHERE 1=1
+      <if test="name != null and name != ''">
+        name LIKE CONCAT('%', #{name}, '%')
+      </if>
+      <if test="area != null and area != ''">
+        AND area = #{area}
+      </if>
+      <if test="sex != null and sex != ''">
+        AND sex = #{sex}
+      </if>
+    </select>
+  -->
 </mapper>
