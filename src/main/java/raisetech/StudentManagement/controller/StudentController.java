@@ -114,11 +114,12 @@ public class StudentController {
   }
 
   @GetMapping("/exception")
-  public ResponseEntity<String> throwException() throws NotFoundException{
+  public ResponseEntity<String> throwException() throws NotFoundException {
     throw new NotFoundException("現在のこのAPIは利用できません。古いURLとなっております。");
   }
+
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<String> handleNotFoundException(NotFoundException ex){
+  public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
     return ResponseEntity.badRequest().body(ex.getMessage());
   }
 
@@ -131,20 +132,21 @@ public class StudentController {
 
   //以下test終了後に追加
   @GetMapping("/students")
-  public List<Student> searchStudents(
-      @RequestParam(required = false) String name,
-      @RequestParam(required = false) String courseName) {
-
-    // 検索条件をセット
-    StudentSearchCondition condition = new StudentSearchCondition();
-    condition.setName(name);
-    condition.setCourseName(courseName);
-
+  public List<Student> searchStudents(@ModelAttribute StudentSearchCondition condition) {
     return studentService.searchStudents(condition);
   }
+}
 
-//  @GetMapping("/students/{name}")
-//  public List<Student> searchStudents(@ModelAttribute StudentSearchCondition condition) {
+
+//  @GetMapping("/students")
+//  public List<Student> searchStudents(
+//      @RequestParam(required = false) String name,
+//      @RequestParam(required = false) String courseName) {
+//
+//    // 検索条件をセット
+//    StudentSearchCondition condition = new StudentSearchCondition();
+//    condition.setName(name);
+//    condition.setCourseName(courseName);
+//
 //    return studentService.searchStudents(condition);
 //  }
-}
